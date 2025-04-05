@@ -1,5 +1,5 @@
 .table{
-    margin-top: 100px;
+    margin-top: 10px;
   
 }
 
@@ -16,5 +16,10 @@ background-color: rgba(169, 210, 248, 0.411) !important;
     border: red;
 }
 .noproject-text{
+    margin-top: 100px;
+}
+
+.searchclass{
+
     margin-top: 100px;
 }

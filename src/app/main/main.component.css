@@ -3,7 +3,7 @@
 
 h1{
    
-    background: linear-gradient(to right, #f503a4, #a202ff); /* Gradient colors */
+    background: linear-gradient(to right, #113177, #02b7ff); /* Gradient colors */
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     text-align: center; /* Center the text */
@@ -21,7 +21,7 @@ h1{
     height: 40px;
     border: none;
     border-radius: 20px;
-    background: linear-gradient(to right, #ff029e, #c401ff); /* Gradient colors */
+    background: linear-gradient(to right, #04357e, #01b7ff); /* Gradient colors */
             border: none;
            
             font-size: 18px;

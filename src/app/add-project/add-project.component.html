@@ -63,9 +63,9 @@
       <!-- Team Members -->
       <div class="mb-3">
         <label class="form-label">Team Members</label>
-        <input type="text" class="form-control" formControlName="teamMembers">
+        <input type="number" class="form-control" formControlName="teamMembers">
         <div *ngIf="projectForm.get('teamMembers')?.invalid && (projectForm.get('teamMembers')?.touched || submitted)">
-          <small class="text-danger">EndDate is required</small>
+          <small class="text-danger">TeamMembers is required</small>
         </div>
       </div>
   

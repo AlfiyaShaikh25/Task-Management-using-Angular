@@ -13,9 +13,7 @@
 .accordion-item{
     width: 290px;
 }
-.bodycolor{
-    background-color: aliceblue;
-}
+
 .btn-dark{
     border-radius: 60px;
 }
@@ -37,17 +35,27 @@
       
   }
   
-  .hover-card {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
+
   
-  .hover-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-  }
+ 
   .navbar{
     background-color: #ddf0fac9 !important;
   }
   .username{
     padding-top: 100px;
   }
+  .hover-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .hover-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15);
+  }
+  
+  h1 {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    letter-spacing: 1px;
+    color: rgba(8, 56, 100, 0.849);
+  }
+
+  

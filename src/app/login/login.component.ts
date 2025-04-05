@@ -32,31 +32,18 @@ export class LoginComponent {
     if (this.loginForm.valid) {
       const { username, password } = this.loginForm.value;
   
-      this.userService.loginUser(username, password).subscribe(user => {
-        if (user) {
-          console.log('Login successful:', user);
-          
-          this.router.navigate(['/dashboard'], { 
-            queryParams: { 
-              id: user.id, 
-              username: user.username, 
-              email: user.email, 
-              profileImage: user.profileImage 
-            } 
-          });
-
-        } else {
-          console.error('Invalid username or password');
-          alert('Invalid credentials, please try again.');
-        }
-      }, error => {
-        console.error('Error:', error);
-       
-      });
-    } else {
-      console.log('Form is not valid');
+      const storedUsers: UserInterface[] = JSON.parse(localStorage.getItem('users') || '[]');
+      const loggedInUser = storedUsers.find(user => user.username === username && user.password === password);
+  
+      if (loggedInUser) {
+        // Save session data
+        localStorage.setItem('loggedInUser', JSON.stringify(loggedInUser));
+        // alert(`Welcome ${loggedInUser.username}`);
+        this.router.navigate(['/dashboard']);
+      } else {
+        alert('Invalid username or password');
+      }
     }
-    
   }
 
 

@@ -21,22 +21,23 @@ export class DashboardComponent {
 
 userName:string|null=""
 email:string|null=""
-profileimg:string|null=""
+profileimg: string = 'assets/user-profile.png'; // fallback image
 userId:string|null=""
+
 
   constructor (private route:ActivatedRoute,private userService:UserService){}
 
   ngOnInit():void{
-    this.route.queryParamMap.subscribe(params => {
-      this.userId = params.get("id");
-      this.userName = params.get("username");
-      this.email = params.get("email");
-      this.profileimg = params.get("profileImage");
-  
-      console.log("User:", this.userName);
-      console.log("Email:", this.email);
-      console.log("Profile Image:", this.profileimg);
-      });
+    const userData = localStorage.getItem('loggedInUser');
+  if (userData) {
+    const user = JSON.parse(userData);
+    this.userId = user.id;
+    this.userName = user.username;
+    this.email = user.email;
+    this.profileimg = user.profileImage || this.profileimg; // fallback if not set
+  } else {
+    console.warn('No logged-in user found');
+  }
 
   }
 

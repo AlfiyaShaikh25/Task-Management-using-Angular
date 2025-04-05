@@ -12,67 +12,47 @@ import { Router } from  '@angular/router';
   styleUrl: './profile-setting.component.css'
 })
 export class ProfileSettingComponent {
-  userName: string | null = "";
-  email: string | null = "";
-  userId:string|null=""
-  userImage: string | null = ""; // Store image as Base64
-  
+  username: string = '';
+  email: string = '';
+  profileImage: string = '';
 
-  constructor(private route: ActivatedRoute, private userService: UserService) {}
+  constructor(private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit(): void {
-    this.userName = this.route.snapshot.paramMap.get("username");
-    this.email = this.route.snapshot.paramMap.get("email");
-  
-    if (this.userName) {
-      this.userService.getUserByUsername(this.userName).subscribe(user => {
-        if (user) {
-          this.userId = user.id; // Store user ID
-          this.userImage = user.profileImage ?? null;
-        } else {
-          console.error("User not found");
-        }
-      });
-    }
-  }
-  
-  
-
-  onFileSelected(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        this.userImage = reader.result as string;
-      };
+    const userData = localStorage.getItem('loggedInUser');
+    if (userData) {
+      const user = JSON.parse(userData);
+      this.username = user.username;
+      this.email = user.email;
+      this.profileImage = user.profileImage;
     }
   }
 
-  updateProfile() {
-    if (!this.userId) {
-      console.error("User ID not found");
-      return;
-    }
-  
-    const updatedData = {
-      id: this.userId,
-      username: this.userName,
-      email: this.email,
-      profileImage: this.userImage
-    };
-  
-    this.userService.updateUserProfile(this.userName!, updatedData).subscribe(
-      response => {
-        console.log("Profile updated successfully", response);
-        alert("Profile updated successfully!");
-      },
-      error => {
-        console.error("Error updating profile", error);
-        alert("Failed to update profile.");
+onImageChange(event: any): void {
+  const file = event.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.profileImage = reader.result as string;
+
+      // ✅ Update loggedInUser in localStorage
+      const user = JSON.parse(localStorage.getItem('loggedInUser')!);
+      user.profileImage = this.profileImage;
+      localStorage.setItem('loggedInUser', JSON.stringify(user));
+
+      // ✅ Also update the user in the full users list
+      const users = JSON.parse(localStorage.getItem('users') || '[]');
+      const index = users.findIndex((u: any) => u.username === user.username);
+      if (index !== -1) {
+        users[index].profileImage = this.profileImage;
+        localStorage.setItem('users', JSON.stringify(users));
       }
-    );
+
+      alert('Profile image updated successfully!');
+      this.router.navigate(['/dashboard']);
+    };
+    reader.readAsDataURL(file); // Convert image to base64
   }
-  
-  
+}
+
 }

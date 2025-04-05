@@ -1,0 +1,23 @@
+
+.protitle{
+    margin-top: 100px;
+}
+
+h2{
+    text-decoration: underline;
+}
+
+
+.tablecolor{
+    background-color: rgba(144, 181, 235, 0.281) !important;
+    }
+
+    h5{
+        color: rgb(6, 76, 138);
+    }
+
+
+    .equal-btn {
+        width: 120px;
+      }
+      

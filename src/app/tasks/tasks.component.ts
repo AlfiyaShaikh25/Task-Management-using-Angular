@@ -1,13 +1,15 @@
 import { NgClass, NgFor, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Task } from '../interfaces/Task';
-import { FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup,  FormsModule,  ReactiveFormsModule,  Validators } from '@angular/forms';
 import { title } from 'process';
+import { NavBarComponent } from '../nav-bar/nav-bar.component';
 
 @Component({
   selector: 'app-tasks',
-  imports: [NgFor,NgClass,FormsModule,NgIf],
+  standalone: true, 
+  imports: [NgFor,NgClass,FormsModule,NgIf,ReactiveFormsModule,RouterLink,NavBarComponent],
   templateUrl: './tasks.component.html',
   styleUrl: './tasks.component.css'
 })
@@ -41,20 +43,25 @@ export class TasksComponent {
   }
 
   ngOnInit() {
-    this.projectTitle = this.route.snapshot.paramMap.get("title"); // Get project title from URL
-    const projects = JSON.parse(localStorage.getItem("projects") || "[]");
-    console.log("Project Title from URL:", this.route.snapshot.paramMap.get("title"));
-
-    const project = projects.find((p: { title: string }) => p.title === this.projectTitle);
-
-    
-    if (project && project.tasks) {
-      this.tasks = project.tasks;
-    } else {
-      console.error("No tasks found for this project!");
-
+    this.projectTitle = this.route.snapshot.paramMap.get("title");
+    const storedUser = localStorage.getItem("loggedInUser");
+  
+    if (storedUser) {
+      const user = JSON.parse(storedUser);
+      const projectsKey = `projects_${user.username}`;
+      const projects = JSON.parse(localStorage.getItem(projectsKey) || "[]");
+  
+      const project = projects.find((p: any) => p.title === this.projectTitle);
+  
+      if (project && project.tasks) {
+        this.tasks = project.tasks;
+      } else {
+        this.tasks = [];
+        console.error("No tasks found for this project!");
+      }
     }
   }
+  
 
 
   closeTaskForm() {
@@ -67,9 +74,21 @@ export class TasksComponent {
   }
   
   editTask(index: number) {
+    console.log('Edit clicked, index:', index); 
     this.editingTaskIndex = index;
-    this.newTask = { ...this.tasks[index] }; // Copy task data into form
+    const taskToEdit = this.tasks[index];
   
+    // Patch the form with the task's values
+    this.addTask.patchValue({
+      title: taskToEdit.title,
+      assignedTo: taskToEdit.assignedTo,
+      status: taskToEdit.status,
+      assignedUser: taskToEdit.assignedUser,
+      estimate: taskToEdit.estimate,
+      timeSpent: taskToEdit.timeSpent
+    });
+  
+    // Show the modal
     const modal = document.getElementById('taskModal');
     if (modal) {
       (modal as any).classList.add('show');
@@ -77,68 +96,81 @@ export class TasksComponent {
       document.body.classList.add('modal-open');
     }
   }
+  
+  
   addOrUpdateTask() {
-    if(this.addTask.valid){
-    if (this.editingTaskIndex !== null) {
-      // Update task
-      this.tasks[this.editingTaskIndex] = { ...this.newTask };
+    if (this.addTask.valid) {
+      const taskData = this.addTask.value;
+  
+      if (this.editingTaskIndex !== null) {
+        this.tasks[this.editingTaskIndex] = { ...taskData };
+      } else {
+        this.tasks.push({ ...taskData });
+      }
+  
+      const storedUser = localStorage.getItem('loggedInUser');
+      if (storedUser) {
+        const user = JSON.parse(storedUser);
+        const projectsKey = `projects_${user.username}`;
+        const projects = JSON.parse(localStorage.getItem(projectsKey) || '[]');
+        const project = projects.find((p: any) => p.title === this.projectTitle);
+        if (project) {
+          project.tasks = this.tasks;
+          localStorage.setItem(projectsKey, JSON.stringify(projects));
+        }
+      }
+  
+      this.addTask.reset();
+      this.editingTaskIndex = null;
+      this.closeTaskForm();
     } else {
-      // Add task
-      this.tasks.push({ ...this.newTask });
+      this.addTask.markAllAsTouched();
     }
-  
-    // Update localStorage
-    const projects = JSON.parse(localStorage.getItem('projects') || '[]');
-    const project = projects.find((p: any) => p.title === this.projectTitle);
-    if (project) {
-      project.tasks = this.tasks;
-      localStorage.setItem('projects', JSON.stringify(projects));
-    }
-  
-    // Reset
-    this.newTask = {
-      title: '',
-      assignedTo: '',
-      status: 'Pending',
-      assignedUser: '',
-      estimate: '',
-      timeSpent: ''
-    };
-    this.editingTaskIndex = null;
-    this.closeTaskForm();
-  }else{
-    this.addTask.markAllAsTouched();
   }
-  }
+  
+  
+  
+  
   
   
   openTaskForm(index: number) {
-    this.editingTaskIndex= index; // Set selected project index
-    this.newTask = { title: '', assignedTo: '', status: 'In Progress', assignedUser: '', estimate: '', timeSpent: '' };
+    this.editingTaskIndex = index;
+    this.addTask.reset({
+      title: '',
+      assignedTo: '',
+      status: 'In Progress',
+      assignedUser: '',
+      estimate: '',
+      timeSpent: ''
+    });
   
-    // Open Bootstrap modal with smooth effect
     const modal = document.getElementById('taskModal');
     if (modal) {
-      (modal as any).classList.add('show');
+      modal.classList.add('show');
       modal.style.display = 'block';
       document.body.classList.add('modal-open');
     }
   }
+  
   deleteTask(index: number) {
-    console.log('Deleting task at index:', index);
-    const confirmDelete = confirm("Are you sure you want to delete this task?");
-    if (confirmDelete) {
-      const projects = JSON.parse(localStorage.getItem("projects") || "[]");
-      const project = projects.find((p: any) => p.title === this.projectTitle);
+    if (confirm("Are you sure you want to delete this task?")) {
+      const storedUser = localStorage.getItem("loggedInUser");
+      if (storedUser) {
+        const user = JSON.parse(storedUser);
+        const projectsKey = `projects_${user.username}`;
+        const projects = JSON.parse(localStorage.getItem(projectsKey) || "[]");
+        const project = projects.find((p: any) => p.title === this.projectTitle);
   
-      if (project && project.tasks) {
-        project.tasks.splice(index, 1); // Remove from localStorage
-        this.tasks.splice(index, 1);    // Remove from displayed list
-  
-        localStorage.setItem("projects", JSON.stringify(projects));
+        if (project && project.tasks) {
+          project.tasks.splice(index, 1);
+          this.tasks.splice(index, 1);
+          localStorage.setItem(projectsKey, JSON.stringify(projects));
+        }
       }
     }
   }
+  
+  
   
   
   }

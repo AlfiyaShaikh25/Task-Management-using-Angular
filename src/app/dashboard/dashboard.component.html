@@ -10,7 +10,7 @@
 
 
 
-     <div class="bodycolor">
+   
 
 
       <nav class="navbar navbar-expand-lg fixed-top bg-white  shadow-sm p-0  ">
@@ -69,6 +69,10 @@
                <a class="nav-link" routerLink="/view-projects">View Projects</a>
              </li>
            </ul>
+
+           <button type="button" class="btn btn-dark ms-auto" (click)="toggleProfile()">
+            <i class="bi bi-person-circle"></i> Profile
+          </button>
          </div>
        </div>
        
@@ -98,29 +102,43 @@
   </div>
 </div>
 
-<h1 class="username">👋WellCome {{userName}}!</h1>
+<div class="container mt-5 pt-4">
+  <h1 class="text-start fw-bold display-6 ">
+ Welcome, {{ userName }}! 
+  </h1>
+</div>
 
-<div class="d-flex">
 
-<div class="container mt-5 pt-5 d-flex justify-content-center"> 
-  <div class="card hover-card" style="width: 18rem;">
-    <img class="card-img-top" src="assets/add-project.png" alt="Card image cap">
-    <div class="card-body">
-      <h5 class="card-title d-flex justify-content-center">Create Project</h5>
-      <p class="card-text">Manage tasks, collaborate with your team, and track progress efficiently.</p>
-      <a href="#" class="btn btn-primary d-flex justify-content-center" routerLink="/add-project">Add Project</a>
+
+
+<div class="container mt-5 pt-5">
+  <div class="row justify-content-center g-4">
+    
+    <!-- Card 1 -->
+    <div class="col-12 col-md-6 col-lg-4 d-flex justify-content-center">
+      <div class="card hover-card" style="width: 18rem;">
+        <img class="card-img-top" src="assets/add-project.png" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title text-center">Create Project</h5>
+          <p class="card-text text-center">Manage tasks, collaborate with your team, and track progress efficiently.</p>
+          <a routerLink="/add-project" class="btn btn-primary d-block mx-auto">Add Project</a>
+        </div>
+      </div>
     </div>
+
+    <!-- Card 2 -->
+    <div class="col-12 col-md-6 col-lg-4 d-flex justify-content-center">
+      <div class="card hover-card" style="width: 18rem;">
+        <img class="card-img-top" src="assets/view-project.jpg" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title text-center">View Project</h5>
+          <p class="card-text text-center">Check project details, track progress, and manage tasks effectively.</p>
+          <a routerLink="/view-projects" class="btn btn-primary d-block mx-auto">View Project</a>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 
-<div class="container mt-5 pt-5"> 
-  <div class="card hover-card" style="width: 18rem;">
-    <img class="card-img-top" src="assets/view-project.jpg" alt="Card image cap">
-    <div class="card-body">
-      <h5 class="card-title d-flex justify-content-center">View Project</h5>
-      <p class="card-text">Check project details, track progress, and manage tasks effectively</p>
-      <a href="#" class="btn btn-primary d-flex justify-content-center" routerLink="/view-projects">View Project</a>
-    </div>
-  </div>
-</div>
-</div>
+

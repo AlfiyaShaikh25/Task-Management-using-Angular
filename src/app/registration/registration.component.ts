@@ -47,21 +47,21 @@ export class RegistrationComponent {
     if (this.signUpForm.valid) {
       const formValues: UserInterface = this.signUpForm.value;
   
-      this.userService.saveUser(formValues).subscribe(
-        (data: UserInterface) => {
-          console.log('User saved:', data);
-          this.router.navigate(["/login"]);
-        },
-        (error) => {
-          console.error('Error:', error);
-        }
-      );
+      // Save to localStorage
+      const existingUsers = JSON.parse(localStorage.getItem('users') || '[]');
+      const userExists = existingUsers.some((user: UserInterface) => user.username === formValues.username);
+  
+      if (userExists) {
+        alert('User already exists');
+      } else {
+        existingUsers.push(formValues);
+        localStorage.setItem('users', JSON.stringify(existingUsers));
+        alert('User registered successfully!');
+        this.router.navigate(['/login']);
+      }
     } else {
       console.log('Form is not valid');
     }
-
-    this.getUser()
-  
   }
 
  
