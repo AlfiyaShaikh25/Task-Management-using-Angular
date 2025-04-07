@@ -13,23 +13,17 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'registration', component: RegistrationComponent },
   { path: 'dashboard', component: DashboardComponent },
-
-  // 👇 Disable prerendering for dynamic route
   {
     path: 'dashboard/:id',
     component: DashboardComponent,
-    data: { renderMode: 'csr' } // client-side rendering only
+    data: { renderMode: 'disable' } // ⛔ disable prerendering
   },
-
   { path: 'profile-setting', component: ProfileSettingComponent },
   { path: 'view-projects', component: ViewProjectsComponent },
-
-  // 👇 Disable prerendering for dynamic route
   {
     path: 'tasks/:title',
     component: TasksComponent,
-    data: { renderMode: 'csr' }
+    data: { renderMode: 'disable' } // ⛔ disable prerendering
   },
-
   { path: 'add-project', component: AddProjectComponent }
 ];
