@@ -21,5 +21,12 @@ background-color: rgba(169, 210, 248, 0.411) !important;
 
 .searchclass{
 
-    margin-top: 100px;
+    margin-top: 60px;
 }
+.main-container {
+    padding-top: 70px;
+  }
+  .card-title{
+    color: #0b1836;
+  }
+  

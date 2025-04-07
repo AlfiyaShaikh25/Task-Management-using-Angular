@@ -30,7 +30,7 @@
   
   .card{
     margin-top: 5%;
- 
+       
         box-shadow: 0 10px 15px rgba(4, 119, 185, 0.432);
       
   }
@@ -58,4 +58,25 @@
     color: rgba(8, 56, 100, 0.849);
   }
 
+  .profile-box {
+    position: absolute; 
+    top: 80px;
+    right: 20px;
+    width: 280px;
+    z-index: 1050;
+    background-color: white;
+    padding: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+  }
+@media (max-width: 768px) {
+  .profile-box {
+    right: 50%;
+    transform: translateX(50%);
+    left: auto;
+  }
+}
   
+.btn{
+  background-color: rgb(3, 26, 61);
+}

@@ -15,3 +15,16 @@ nav{
 .form-label{
   font-weight: 500;
 }
+.btn{
+  background-color: rgb(3, 27, 70);
+  color: white;
+  transition: all 0.3s ease;
+}
+.btn :hover{
+  .btn:hover {
+    background-color: rgb(6, 45, 112); /* A lighter shade for hover */
+    color: white; /* Keep it white or change if needed */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transform: translateY(-1px);
+  }
+}
