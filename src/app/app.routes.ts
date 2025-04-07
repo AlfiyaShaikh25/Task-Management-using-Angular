@@ -16,14 +16,14 @@ export const routes: Routes = [
   {
     path: 'dashboard/:id',
     component: DashboardComponent,
-    data: { renderMode: 'disable' } // ⛔ disable prerendering
+    data: { renderMode: 'no-prerender' }
   },
   { path: 'profile-setting', component: ProfileSettingComponent },
   { path: 'view-projects', component: ViewProjectsComponent },
   {
     path: 'tasks/:title',
     component: TasksComponent,
-    data: { renderMode: 'disable' } // ⛔ disable prerendering
+    data: { renderMode: 'no-prerender' }
   },
   { path: 'add-project', component: AddProjectComponent }
 ];
